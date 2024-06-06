@@ -41,6 +41,14 @@ jobs:
           Write-Host "Directory created: $dir"
         shell: pwsh
 
+      - name: Copy Project Files
+        run: |
+          $sourceDir = "$(pwd)/DotNetCoreSqlDb"
+          $destDir = "${{env.DOTNET_ROOT}}/myapp/DotNetCoreSqlDb"
+          Copy-Item -Path $sourceDir/* -Destination $destDir -Recurse
+          Write-Host "Project files copied to: $destDir"
+        shell: pwsh
+
       - name: List Directory Contents for Debugging
         run: |
           cd ${{env.DOTNET_ROOT}}/myapp
