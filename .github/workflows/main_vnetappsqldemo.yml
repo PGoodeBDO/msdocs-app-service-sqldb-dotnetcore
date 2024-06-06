@@ -61,6 +61,12 @@ jobs:
           Get-ChildItem
         shell: pwsh
 
+      - name: List Published Files
+        run: |
+          cd ${{env.DOTNET_ROOT}}/myapp
+          Get-ChildItem -Recurse
+        shell: pwsh
+
       - name: dotnet bundle migration
         run: |
           cd ${{env.DOTNET_ROOT}}/myapp
