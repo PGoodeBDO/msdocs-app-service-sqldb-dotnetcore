@@ -47,6 +47,12 @@ jobs:
           Get-ChildItem -Recurse
         shell: pwsh
 
+      - name: List Contents of DotNetCoreSqlDb Directory
+        run: |
+          cd ${{env.DOTNET_ROOT}}/myapp/DotNetCoreSqlDb
+          Get-ChildItem
+        shell: pwsh
+
       - name: dotnet bundle migration
         run: |
           cd ${{env.DOTNET_ROOT}}/myapp
