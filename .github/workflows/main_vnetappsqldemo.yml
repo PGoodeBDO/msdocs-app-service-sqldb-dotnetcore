@@ -30,7 +30,7 @@ jobs:
       - name: dotnet install ef
         run: dotnet tool install -g dotnet-ef --version 7.0.14
  
-      - name: Ensure Directory Clean State
+      - name: Ensure Directory is Clean
         run: |
           $dir = "${{env.DOTNET_ROOT}}/myapp/DotNetCoreSqlDb"
           if (Test-Path -Path $dir) {
