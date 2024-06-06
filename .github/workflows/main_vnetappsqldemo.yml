@@ -44,7 +44,12 @@ jobs:
       - name: dotnet bundle migration
         run: |
          cd ${{env.DOTNET_ROOT}}/myapp
+         if (Test-Path -Path "DotNetCoreSqlDb/DotNetCoreSqlDb.csproj") {
          dotnet ef migrations bundle --runtime linux-x64 -p DotNetCoreSqlDb/DotNetCoreSqlDb.csproj -o migrate
+         } else {
+          Write-Error "Project file does not exist: DotNetCoreSqlDb/DotNetCoreSqlDb.csproj"
+         }
+        shell: pwsh
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v3
