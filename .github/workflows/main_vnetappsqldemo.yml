@@ -30,15 +30,15 @@ jobs:
       - name: dotnet install ef
         run: dotnet tool install -g dotnet-ef --version 7.0.14
  
-      - name: Check and Create Directory
+      - name: Ensure Directory Clean State
         run: |
           $dir = "${{env.DOTNET_ROOT}}/myapp/DotNetCoreSqlDb"
           if (Test-Path -Path $dir) {
-              Write-Host "Directory already exists: $dir"
-          } else {
-              New-Item -ItemType Directory -Path $dir
-              Write-Host "Directory created: $dir"
+              Remove-Item -Recurse -Force -Path $dir
+              Write-Host "Directory removed: $dir"
           }
+          New-Item -ItemType Directory -Path $dir
+          Write-Host "Directory created: $dir"
         shell: pwsh
 
       - name: dotnet bundle migration
