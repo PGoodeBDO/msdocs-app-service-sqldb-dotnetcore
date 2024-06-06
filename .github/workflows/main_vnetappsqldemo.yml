@@ -29,7 +29,7 @@ jobs:
 
       - name: dotnet install ef
         run: dotnet tool install -g dotnet-ef --version 7.0.14
- 
+
       - name: Ensure Directory is Clean
         run: |
           $dir = "${{env.DOTNET_ROOT}}/myapp/DotNetCoreSqlDb"
@@ -41,14 +41,20 @@ jobs:
           Write-Host "Directory created: $dir"
         shell: pwsh
 
+      - name: List Directory Contents for Debugging
+        run: |
+          cd ${{env.DOTNET_ROOT}}/myapp
+          Get-ChildItem -Recurse
+        shell: pwsh
+
       - name: dotnet bundle migration
         run: |
-         cd ${{env.DOTNET_ROOT}}/myapp
-         if (Test-Path -Path "DotNetCoreSqlDb/DotNetCoreSqlDb.csproj") {
-         dotnet ef migrations bundle --runtime linux-x64 -p DotNetCoreSqlDb/DotNetCoreSqlDb.csproj -o migrate
-         } else {
-          Write-Error "Project file does not exist: DotNetCoreSqlDb/DotNetCoreSqlDb.csproj"
-         }
+          cd ${{env.DOTNET_ROOT}}/myapp
+          if (Test-Path -Path "DotNetCoreSqlDb/DotNetCoreSqlDb.csproj") {
+              dotnet ef migrations bundle --runtime linux-x64 -p DotNetCoreSqlDb/DotNetCoreSqlDb.csproj -o migrate
+          } else {
+              Write-Error "Project file does not exist: DotNetCoreSqlDb/DotNetCoreSqlDb.csproj"
+          }
         shell: pwsh
 
       - name: Upload artifact for deployment job
