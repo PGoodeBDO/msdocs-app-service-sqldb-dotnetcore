@@ -71,6 +71,9 @@ jobs:
           cat DotNetCoreSqlDb.runtimeconfig.json
         shell: pwsh
 
+      - name: Verify .NET SDK and Runtime Installation
+        run: dotnet --info 
+
       - name: List Published Files
         run: |
           cd ${{env.DOTNET_ROOT}}/myapp
