@@ -54,7 +54,13 @@ jobs:
           cd ${{env.DOTNET_ROOT}}/myapp
           Get-ChildItem -Recurse
         shell: pwsh
-
+        
+      - name: Check runtimeconfig.json
+        run: |
+          cd ${{env.DOTNET_ROOT}}/myapp/DotNetCoreSqlDb/bin/Debug/net7.0/linux-x64
+          cat DotNetCoreSqlDb.runtimeconfig.json
+        shell: pwsh
+        
       - name: List Contents of DotNetCoreSqlDb Directory
         run: |
           cd ${{env.DOTNET_ROOT}}/myapp/DotNetCoreSqlDb
