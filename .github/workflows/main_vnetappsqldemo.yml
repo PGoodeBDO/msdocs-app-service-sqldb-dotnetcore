@@ -61,6 +61,12 @@ jobs:
           Get-ChildItem
         shell: pwsh
 
+      - name: Ensure runtimeconfig.json is Generated
+        run: |
+          echo '<PropertyGroup>' >> DotNetCoreSqlDb/DotNetCoreSqlDb.csproj
+          echo '  <GenerateRuntimeConfigDevFile>true</GenerateRuntimeConfigDevFile>' >> DotNetCoreSqlDb/DotNetCoreSqlDb.csproj
+          echo '</PropertyGroup>' >> DotNetCoreSqlDb/DotNetCoreSqlDb.csproj
+          
       - name: List Published Files
         run: |
           cd ${{env.DOTNET_ROOT}}/myapp
