@@ -5,6 +5,7 @@
     <GenerateRuntimeConfigDevFile>true</GenerateRuntimeConfigDevFile>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <RuntimeIdentifier>linux-x64</RuntimeIdentifier>
   </PropertyGroup>
 
   <ItemGroup>
