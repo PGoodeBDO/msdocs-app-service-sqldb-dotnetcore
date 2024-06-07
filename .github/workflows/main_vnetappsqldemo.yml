@@ -10,6 +10,9 @@ jobs:
   build:
     runs-on: windows-latest
 
+    env:
+      SHORT_DOTNET_ROOT: C:\dotnet
+
     steps:
       - uses: actions/checkout@v4
 
@@ -25,14 +28,14 @@ jobs:
           dotnet build --configuration Release
 
       - name: dotnet publish
-        run: dotnet publish -c Release -r linux-x64 --self-contained -o ${{env.DOTNET_ROOT}}/myapp --framework net7.0
+        run: dotnet publish -c Release -r linux-x64 --self-contained -o ${{env.SHORT_DOTNET_ROOT}}/myapp --framework net7.0
 
       - name: dotnet install ef
         run: dotnet tool install -g dotnet-ef --version 7.0.14
 
       - name: Ensure Directory is Clean
         run: |
-          $dir = "${{env.DOTNET_ROOT}}/myapp/DotNetCoreSqlDb"
+          $dir = "${{env.SHORT_DOTNET_ROOT}}/myapp/DotNetCoreSqlDb"
           if (Test-Path -Path $dir) {
               Remove-Item -Recurse -Force -Path $dir
               Write-Host "Directory removed: $dir"
@@ -44,38 +47,32 @@ jobs:
       - name: Copy Project Files
         run: |
           $sourceDir = "$(pwd)/DotNetCoreSqlDb"
-          $destDir = "${{env.DOTNET_ROOT}}/myapp/DotNetCoreSqlDb"
+          $destDir = "${{env.SHORT_DOTNET_ROOT}}/myapp/DotNetCoreSqlDb"
           Copy-Item -Path $sourceDir/* -Destination $destDir -Recurse
           Write-Host "Project files copied to: $destDir"
         shell: pwsh
 
       - name: List Directory Contents for Debugging
         run: |
-          cd ${{env.DOTNET_ROOT}}/myapp
+          cd ${{env.SHORT_DOTNET_ROOT}}/myapp
           Get-ChildItem -Recurse
         shell: pwsh
-        
-      - name: Check runtimeconfig.json
-        run: |
-          cd ${{env.DOTNET_ROOT}}/myapp/DotNetCoreSqlDb/bin/Debug/net7.0/linux-x64
-          cat DotNetCoreSqlDb.runtimeconfig.json
-        shell: pwsh
-        
+
       - name: List Contents of DotNetCoreSqlDb Directory
         run: |
-          cd ${{env.DOTNET_ROOT}}/myapp/DotNetCoreSqlDb
+          cd ${{env.SHORT_DOTNET_ROOT}}/myapp/DotNetCoreSqlDb
           Get-ChildItem
         shell: pwsh
 
       - name: List Published Files
         run: |
-          cd ${{env.DOTNET_ROOT}}/myapp
+          cd ${{env.SHORT_DOTNET_ROOT}}/myapp
           Get-ChildItem -Recurse
         shell: pwsh
 
       - name: dotnet bundle migration
         run: |
-          cd ${{env.DOTNET_ROOT}}/myapp
+          cd ${{env.SHORT_DOTNET_ROOT}}/myapp
           if (Test-Path -Path "DotNetCoreSqlDb/DotNetCoreSqlDb.csproj") {
               dotnet ef migrations bundle --runtime linux-x64 -p DotNetCoreSqlDb/DotNetCoreSqlDb.csproj -o migrate
           } else {
@@ -87,7 +84,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: .net-app
-          path: ${{env.DOTNET_ROOT}}/myapp
+          path: ${{env.SHORT_DOTNET_ROOT}}/myapp
 
   deploy:
     runs-on: windows-latest
