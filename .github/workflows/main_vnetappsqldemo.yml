@@ -61,6 +61,12 @@ jobs:
           Get-ChildItem
         shell: pwsh
 
+      - name: Check runtimeconfig.json
+        run: |
+          cd ${{env.DOTNET_ROOT}}/myapp
+          cat DotNetCoreSqlDb.runtimeconfig.json
+        shell: pwsh
+
       - name: List Published Files
         run: |
           cd ${{env.DOTNET_ROOT}}/myapp
