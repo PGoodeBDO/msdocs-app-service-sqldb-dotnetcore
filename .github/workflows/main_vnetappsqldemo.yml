@@ -19,14 +19,13 @@ jobs:
           dotnet-version: '8.x'
           include-prerelease: true
 
-      - name: Restore Dependencies
-        run: dotnet restore --runtime linux-x64
+      - name: Clean and build
+        run: |
+          dotnet clean
+          dotnet build --configuration Release
 
-      - name: Build Application
-        run: dotnet build --configuration Release --runtime linux-x64 --no-restore
-
-      - name: Publish Application
-        run: dotnet publish --configuration Release --runtime linux-x64 --no-restore --no-build -p:SelfContained=false
+      - name: dotnet publish
+        run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/myapp --framework net7.0
 
       - name: dotnet install ef
         run: dotnet tool install -g dotnet-ef --version 7.0.14
